@@ -1,21 +1,21 @@
 /* Life Reset System (private web app). Keeps this version of the app on the
    device so it opens offline. A new version is saved in the background and
-   used the next time the app is opened fresh. Build 4e16cbeea4cd. */
-const CACHE = 'life-reset-4e16cbeea4cd';
+   used the next time the app is opened fresh. Build 4f92538268da. */
+const CACHE = 'life-reset-4f92538268da';
 const FILES = [
   "./assets/core-Djq8_Zg8.js",
   "./assets/dm-mono-latin-400-normal--0xN8mdc.woff",
   "./assets/dm-mono-latin-400-normal-4GdczIuU.woff2",
   "./assets/dm-mono-latin-500-normal-CN8Miw6E.woff",
   "./assets/dm-mono-latin-500-normal-DRMDZjhP.woff2",
-  "./assets/esm-BN6M-UW8.js",
-  "./assets/esm-DeVORrt8.js",
+  "./assets/esm-CD57ntWs.js",
+  "./assets/esm-Cx5dwNLq.js",
   "./assets/event-D9RmQ88t.js",
-  "./assets/index-CFwb1-js.js",
+  "./assets/index-C3FPaqwL.js",
   "./assets/index-CkoV4a0r.css",
-  "./assets/web-CIbwAtGJ.js",
-  "./assets/web-DYaeasmz.js",
-  "./assets/web-Dfelq5vy.js",
+  "./assets/web-D9JbVA95.js",
+  "./assets/web-Drx39Q_M.js",
+  "./assets/web-__93X1MX.js",
   "./assets/work-sans-latin-400-normal-DE1_0GuN.woff",
   "./assets/work-sans-latin-400-normal-jUejSri3.woff2",
   "./assets/work-sans-latin-500-normal-BKGnScDy.woff2",
