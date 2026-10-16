@@ -1,8 +1,8 @@
 /* Life Reset System (private web app). Keeps this version of the app on the
    device so it opens offline. When a new version is published, it is saved in
    the background, takes over right away and reloads the open app once.
-   Build 841c307c4b7e. */
-const CACHE = 'life-reset-841c307c4b7e';
+   Build e8c8bee1ff42. */
+const CACHE = 'life-reset-e8c8bee1ff42';
 const FILES = [
   "./assets/core-Djq8_Zg8.js",
   "./assets/dist-js-CUDI5H8p.js",
@@ -10,16 +10,16 @@ const FILES = [
   "./assets/dm-mono-latin-400-normal-4GdczIuU.woff2",
   "./assets/dm-mono-latin-500-normal-CN8Miw6E.woff",
   "./assets/dm-mono-latin-500-normal-DRMDZjhP.woff2",
-  "./assets/esm-C8FBeATB.js",
-  "./assets/esm-CJFEH_4u.js",
-  "./assets/esm-DLsZ2rsR.js",
+  "./assets/esm-BKuM00-3.js",
+  "./assets/esm-COGcqb08.js",
+  "./assets/esm-DFlpLPvE.js",
   "./assets/event-D9RmQ88t.js",
-  "./assets/index-BvguS_v2.css",
-  "./assets/index-Dl28FNDq.js",
-  "./assets/web-BoJJeoQp.js",
-  "./assets/web-C_2g16xI.js",
-  "./assets/web-D9nh-0Lp.js",
-  "./assets/web-Dz6FlfuW.js",
+  "./assets/index-BB-M72jB.css",
+  "./assets/index-BtgFdjiW.js",
+  "./assets/web-CG4wdWCd.js",
+  "./assets/web-D5ORKI17.js",
+  "./assets/web-DBbCd9J-.js",
+  "./assets/web-mcDq7-hX.js",
   "./assets/work-sans-latin-400-normal-DE1_0GuN.woff",
   "./assets/work-sans-latin-400-normal-jUejSri3.woff2",
   "./assets/work-sans-latin-500-normal-BKGnScDy.woff2",
