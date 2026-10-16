@@ -1,7 +1,8 @@
 /* Life Reset System (private web app). Keeps this version of the app on the
-   device so it opens offline. A new version is saved in the background and
-   used the next time the app is opened fresh. Build 2b0c2719d0f1. */
-const CACHE = 'life-reset-2b0c2719d0f1';
+   device so it opens offline. When a new version is published, it is saved in
+   the background, takes over right away and reloads the open app once.
+   Build 841c307c4b7e. */
+const CACHE = 'life-reset-841c307c4b7e';
 const FILES = [
   "./assets/core-Djq8_Zg8.js",
   "./assets/dist-js-CUDI5H8p.js",
@@ -9,16 +10,16 @@ const FILES = [
   "./assets/dm-mono-latin-400-normal-4GdczIuU.woff2",
   "./assets/dm-mono-latin-500-normal-CN8Miw6E.woff",
   "./assets/dm-mono-latin-500-normal-DRMDZjhP.woff2",
-  "./assets/esm-BfKXhKbf.js",
-  "./assets/esm-Cx827PDv.js",
-  "./assets/esm-DOfA7_HU.js",
+  "./assets/esm-C8FBeATB.js",
+  "./assets/esm-CJFEH_4u.js",
+  "./assets/esm-DLsZ2rsR.js",
   "./assets/event-D9RmQ88t.js",
   "./assets/index-BvguS_v2.css",
-  "./assets/index-D6wX1Dza.js",
-  "./assets/web-Bn7FLMf7.js",
-  "./assets/web-C4FwjwPE.js",
-  "./assets/web-CEFaeyMu.js",
-  "./assets/web-Cv1Hczbb.js",
+  "./assets/index-Dl28FNDq.js",
+  "./assets/web-BoJJeoQp.js",
+  "./assets/web-C_2g16xI.js",
+  "./assets/web-D9nh-0Lp.js",
+  "./assets/web-Dz6FlfuW.js",
   "./assets/work-sans-latin-400-normal-DE1_0GuN.woff",
   "./assets/work-sans-latin-400-normal-jUejSri3.woff2",
   "./assets/work-sans-latin-500-normal-BKGnScDy.woff2",
@@ -44,15 +45,25 @@ const FILES = [
 ];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(FILES)));
+  // Take over as soon as this version is saved: an update never waits for every tab to close.
+  event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(FILES)).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     (async () => {
       const keys = await caches.keys();
-      await Promise.all(keys.filter((k) => k.startsWith('life-reset-') && k !== CACHE).map((k) => caches.delete(k)));
+      const older = keys.filter((k) => k.startsWith('life-reset-') && k !== CACHE);
+      await Promise.all(older.map((k) => caches.delete(k)));
       await self.clients.claim();
+      // An update (not a first install): reload windows still showing the older version.
+      // Not awaited: the reload can only be answered once this worker has finished activating.
+      if (older.length) {
+        const wins = await self.clients.matchAll({ type: 'window' });
+        for (const w of wins) {
+          if ('navigate' in w) w.navigate(w.url).catch(() => {});
+        }
+      }
     })(),
   );
 });
@@ -63,13 +74,22 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
   if (req.mode === 'navigate') {
-    // The app is one page (links use #/...): always the saved copy, so it opens offline.
+    // The app is one page (links use #/...). Online: the newest page, so a new version
+    // shows up right away. Offline or a slow connection: the saved copy, so it still opens.
     event.respondWith(
       (async () => {
         const cache = await caches.open(CACHE);
         const saved = await cache.match('./index.html');
-        if (saved) return saved;
-        return fetch(req);
+        try {
+          const ctrl = new AbortController();
+          const timer = setTimeout(() => ctrl.abort(), saved ? 3500 : 20000);
+          const res = await fetch(url.href, { cache: 'no-store', credentials: 'same-origin', signal: ctrl.signal });
+          clearTimeout(timer);
+          if (res.ok) return res;
+        } catch (e) {
+          /* offline or slow */
+        }
+        return saved || fetch(req);
       })(),
     );
     return;
