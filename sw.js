@@ -1,21 +1,24 @@
 /* Life Reset System (private web app). Keeps this version of the app on the
    device so it opens offline. A new version is saved in the background and
-   used the next time the app is opened fresh. Build 4f92538268da. */
-const CACHE = 'life-reset-4f92538268da';
+   used the next time the app is opened fresh. Build 2b0c2719d0f1. */
+const CACHE = 'life-reset-2b0c2719d0f1';
 const FILES = [
   "./assets/core-Djq8_Zg8.js",
+  "./assets/dist-js-CUDI5H8p.js",
   "./assets/dm-mono-latin-400-normal--0xN8mdc.woff",
   "./assets/dm-mono-latin-400-normal-4GdczIuU.woff2",
   "./assets/dm-mono-latin-500-normal-CN8Miw6E.woff",
   "./assets/dm-mono-latin-500-normal-DRMDZjhP.woff2",
-  "./assets/esm-CD57ntWs.js",
-  "./assets/esm-Cx5dwNLq.js",
+  "./assets/esm-BfKXhKbf.js",
+  "./assets/esm-Cx827PDv.js",
+  "./assets/esm-DOfA7_HU.js",
   "./assets/event-D9RmQ88t.js",
-  "./assets/index-C3FPaqwL.js",
-  "./assets/index-CkoV4a0r.css",
-  "./assets/web-D9JbVA95.js",
-  "./assets/web-Drx39Q_M.js",
-  "./assets/web-__93X1MX.js",
+  "./assets/index-BvguS_v2.css",
+  "./assets/index-D6wX1Dza.js",
+  "./assets/web-Bn7FLMf7.js",
+  "./assets/web-C4FwjwPE.js",
+  "./assets/web-CEFaeyMu.js",
+  "./assets/web-Cv1Hczbb.js",
   "./assets/work-sans-latin-400-normal-DE1_0GuN.woff",
   "./assets/work-sans-latin-400-normal-jUejSri3.woff2",
   "./assets/work-sans-latin-500-normal-BKGnScDy.woff2",
@@ -79,6 +82,25 @@ self.addEventListener('fetch', (event) => {
       const res = await fetch(req);
       if (res.ok && res.type === 'basic') cache.put(req, res.clone()).catch(() => {});
       return res;
+    })(),
+  );
+});
+
+// A reminder was tapped: bring the app forward on the page it's about.
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const route = (event.notification.data && event.notification.data.route) || '/';
+  event.waitUntil(
+    (async () => {
+      const wins = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+      for (const w of wins) {
+        if ('focus' in w) {
+          w.postMessage({ type: 'navigate', route });
+          await w.focus();
+          return;
+        }
+      }
+      if (self.clients.openWindow) await self.clients.openWindow(new URL('./#' + route, self.registration.scope).href);
     })(),
   );
 });
